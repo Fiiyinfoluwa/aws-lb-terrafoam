@@ -1,0 +1,29 @@
+---
+- name: Install Apache Server, set timezone and display Server IP
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Install Apache Server
+    apt:
+      name: apache2
+      state: present
+
+  - name: Remove index.html for host
+    file: 
+      name: /var/www/html/index.html
+      state: absent
+
+  - name: Copy your index file
+    template:
+      src: "/home/vagrant/terraform-dir/vpc/server-ip.html"
+      dest: "/var/www/html/index.html"
+
+  - name: Start Apache Service
+    service:
+      name: apache2
+      state: started
+
+  - name: set Timezone to Africa/Lagos
+    timezone: 
+      name: Africa/Lagos

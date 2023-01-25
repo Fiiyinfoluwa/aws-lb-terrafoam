@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Server Info</title>
+</head>
+<body>
+
+<h1>Server Info</h1>
+
+<p>Public IP Address: <span id="ip"></span></p>
+
+<p>Timezone: <span id="timezone"></span></p>
+
+<script>
+fetch('https://api.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("ip").innerHTML = data.ip;
+  });
+
+var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+document.getElementById("timezone").innerHTML = tz;
+</script>
+
+</body>
+</html>

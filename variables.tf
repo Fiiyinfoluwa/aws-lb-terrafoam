@@ -35,3 +35,8 @@ variable "domain_name" {
   type    = string
   default = "fiiyinfoluwa.live"
 }
+
+variable "sub_domain_name" {
+  type    = string
+  default = "terraform-test"
+}

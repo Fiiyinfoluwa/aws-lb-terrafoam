@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = "main-vpc"
+    Name = var.vpc_name
   }
 }
 
@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "main"
+    Name = var.vpc_name
   }
 }
 
@@ -24,7 +24,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "Subnet-${count.index + 1}"
+    Name = "${var.public_subnet_name}-${count.index + 1}"
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_route_table" "public_route_table" {
     gateway_id = aws_internet_gateway.gw.id
   }
   tags = {
-    Name = "PublicRouteTable"
+    Name = var.public_route_table_name
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_route_table_association" "public_route_table_association" {
 
 # Create a security group
 resource "aws_security_group" "main" {
-  name        = "main"
+  name        = var.main_security_group_name
   description = "Allow SSH, HTTP, HTTPS traffic"
   vpc_id      = aws_vpc.main.id
 
@@ -92,7 +92,7 @@ resource "aws_security_group" "main" {
 
 # Create a seccurity group for the load balancer
 resource "aws_security_group" "alb" {
-  name   = "alb_security_group"
+  name   = var.alb_security_group_name
   vpc_id = aws_vpc.main.id
 
   # Allow all inbound traffic to port 443.
@@ -136,7 +136,7 @@ resource "aws_lb_target_group" "target" {
 
 # Create a load balancer
 resource "aws_lb" "alb" {
-  name               = "main-alb"
+  name               = var.main_lb_name
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
@@ -238,7 +238,7 @@ resource "aws_instance" "main" {
 
 # Create a key pair for the instances
 resource "aws_key_pair" "web" {
-  public_key = file("/home/vagrant/web.pub")
+  public_key = file("~/web.pub")
 }
 
 # Create a target group attachment for each instance
@@ -258,13 +258,13 @@ resource "local_file" "host" {
 # Run the ansible playbook
 resource "null_resource" "playbook" {
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key /home/vagrant/web1.pem -i host playbook.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key ~/web1.pem -i host playbook.yml"
 
 
     connection {
       type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("/home/vagrant/web1.pem")
+      user        = var.user
+      private_key = file("~/web1.pem")
       host        = element(aws_instance.main.*.public_ip, 0)
     }
   }

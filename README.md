@@ -42,12 +42,10 @@ This project uses Terraform to create an AWS Loadbalancer infrastructure and Ans
 
 - Defines the default variables used in the project
 
-
 ## What loadbalancer.tf does
 
 - Creates a load balancer
 - Creates a http and https load balancer listener rule
-
 
 ## What target.tf does
 

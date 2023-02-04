@@ -12,4 +12,6 @@
 *.pub
 
 *.terraform.lock.hcl
-*.terraform.tfstate.backup
+terraform.tfstate.backup
+host
+.terraformrc

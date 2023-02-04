@@ -12,21 +12,75 @@ This project uses Terraform to create an AWS Loadbalancer infrastructure and Ans
 
 ## What Main.tf does
 
+- Imports the modules
+
+## What vpc.tf does
+
 - Creates a VPC
 - Creates a public subnet
 - Creates a public route table
 - Creates a public route table association
 - Creates an internet gateway
 - Creates a public route
-- Creates a security group for the load balancer and the instances
+
+## What provider.tf does
+
+- Defines the AWS provider
+- Defines the AWS region
+
+## What EC2.tf does
+
+- Creates multiple EC2 instance
+- Imports the public key
+
+## What security.tf does
+
+- Creates a security group for the EC2 instances
+- Creates a security group for the load balancer
+
+## What variables.tf does
+
+- Defines the default variables used in the project
+
+
+## What loadbalancer.tf does
+
 - Creates a load balancer
 - Creates a http and https load balancer listener rule
+
+
+## What target.tf does
+
 - Creates a load balancer target group
-- Creates a subdomain
 - Creates a load balancer target group attachment
-- Creates a SSL certificate and a validation record
+
+## What subdomain.tf does
+
+- Creates a subdomain for the load balancer
+- Creates a A record for the subdomain
+
+## What ssl.tf does
+
+- Creates a SSL certificate
+- Creates a validation record for the SSL certificate
+- Creates a SSL policy for the load balancer
+- Validates the SSL certificate
+
+## What inventory.tf does
+
 - Creates a host inventory file for Ansible
 - Configures the Servers with Ansible
+
+## What data.tf does
+
+- Imports the hosted zone id
+
+## What playbook.yml does
+
+- Installs Apache
+- Sets the hostname of the servers
+- Sets the timezone of the server
+- Configures Apache to display the hostname
 
 ## How to use
 

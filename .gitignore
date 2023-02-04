@@ -1,0 +1,15 @@
+# Ignore 
+.terraform
+
+#Ignore state files
+*.tfstate
+
+#Ignore .tfvars files, which are usually used to pass sensitive variables that should not be committed
+*.tfvars
+
+#Ignore public/private key files
+*.pem
+*.pub
+
+*.terraform.lock.hcl
+*.terraform.tfstate.backup
